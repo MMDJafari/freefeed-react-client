@@ -12,8 +12,11 @@ import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 import { SignInLink } from './sign-in-link';
 
-const SearchFormAdvanced = lazyComponent(
-  () => import('./search-form-advanced').then((m) => ({ default: m.SearchFormAdvanced })),
+const AdvancedSearchForm = lazyComponent(
+  () =>
+    import('./advanced-search-form/advanced-search-form').then((m) => ({
+      default: m.AdvancedSearchForm,
+    })),
   {
     fallback: <div>Loading form...</div>,
     errorMessage: "Couldn't load search form",
@@ -68,7 +71,7 @@ function FeedHandler(props) {
             </p>
           </>
         )}
-        {(!queryString || advFormVisible) && <SearchFormAdvanced />}
+        {(!queryString || advFormVisible) && <AdvancedSearchForm />}
         {props.entries.length > 0 && <hr />}
       </div>
       {props.entries.length > 0 && (

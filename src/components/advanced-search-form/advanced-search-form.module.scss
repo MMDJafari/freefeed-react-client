@@ -1,0 +1,95 @@
+.form {
+  label {
+    margin-bottom: 0;
+    font-weight: normal;
+  }
+
+  :global(.checkbox) {
+    margin: 0;
+  }
+}
+
+.section {
+  margin-bottom: 1.5em;
+}
+
+.sectionSticky {
+  @media (max-width: 767px) {
+    position: sticky;
+    bottom: 0;
+    padding: 0.5em 0;
+    margin: -0.5em 0 1em;
+    background: white; // TODO: dark mode
+  }
+}
+
+.sectionTitle {
+  border-bottom: none;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.searchScopes {
+  margin-top: 0.5em;
+  display: flex;
+
+  label {
+    margin-left: 0.6em;
+    display: inline-flex;
+    gap: 0.4em;
+    cursor: pointer;
+  }
+}
+
+.columns {
+  display: flex;
+  gap: 0.4em;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .columns {
+    display: grid;
+    gap: 0.2em 2em;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(var(--n-rows), 1fr);
+  }
+}
+
+.inputRow {
+  display: flex;
+  gap: 0 0.5em;
+  flex-direction: column;
+
+  @media (min-width: 380px) {
+    flex-direction: row;
+    align-items: center;
+
+    & > *:first-child {
+      flex: 0 0 50%;
+    }
+
+    & > *:last-child {
+      flex: 1;
+    }
+  }
+}
+
+.intervalBox {
+  display: flex;
+  gap: 0.25em;
+
+  & > *:first-child {
+    flex: 0 0 50%;
+  }
+
+  & > *:last-child {
+    flex: 1;
+  }
+}
+
+.expandIcon {
+  opacity: 0.6;
+}
