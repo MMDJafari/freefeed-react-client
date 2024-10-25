@@ -1,6 +1,19 @@
+@import '../../../styles/helvetica/dark-vars.scss';
+
 .form {
   --text-color: #333;
   --placeholder-color: #999;
+  --background-color: #fff;
+
+  :global(.dark-theme) & {
+    --text-color: #{$text-color};
+    --placeholder-color: #777;
+    --background-color: #{$bg-color};
+  }
+
+  input::placeholder {
+    color: var(--placeholder-color);
+  }
 
   label {
     margin-bottom: 0;
@@ -22,7 +35,7 @@
     bottom: 0;
     padding: 0.5em 0;
     margin: -0.5em 0 1em;
-    background: white; // TODO: dark mode
+    background: var(--background-color);
   }
 }
 
@@ -113,7 +126,7 @@
 }
 
 .selector {
-  color: var(--placeholder-color);
+  color: var(--placeholder-color) !important;
 
   option[value=''] {
     color: var(--placeholder-color);
@@ -125,13 +138,13 @@
 }
 
 .selectorChosen {
-  color: var(--text-color);
+  color: var(--text-color) !important;
 }
 
 .textInput {
-  color: var(--placeholder-color);
+  color: var(--placeholder-color) !important;
 }
 
 .textInputChosen {
-  color: var(--text-color);
+  color: var(--text-color) !important;
 }
