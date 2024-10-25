@@ -1,4 +1,7 @@
 .form {
+  --text-color: #333;
+  --placeholder-color: #999;
+
   label {
     margin-bottom: 0;
     font-weight: normal;
@@ -63,7 +66,7 @@
   gap: 0 0.5em;
   flex-direction: column;
 
-  @media (min-width: 380px) {
+  @media (min-width: 450px) {
     flex-direction: row;
     align-items: center;
 
@@ -92,4 +95,43 @@
 
 .expandIcon {
   opacity: 0.6;
+}
+
+.textInputBox {
+  position: relative;
+}
+
+.autocompleteBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    min-width: 16em;
+  }
+}
+
+.selector {
+  color: var(--placeholder-color);
+
+  option[value=''] {
+    color: var(--placeholder-color);
+  }
+
+  option:not([value='']) {
+    color: var(--text-color);
+  }
+}
+
+.selectorChosen {
+  color: var(--text-color);
+}
+
+.textInput {
+  color: var(--placeholder-color);
+}
+
+.textInputChosen {
+  color: var(--text-color);
 }

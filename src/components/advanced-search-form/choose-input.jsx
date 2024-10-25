@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { useContext, useId } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import style from './advanced-search-form.module.scss';
@@ -15,13 +16,14 @@ export function ChooseInput({ label, children: options, filter }) {
       dispatch(removeFilter(filter));
     }
   });
+  const value = filter in filters ? filters[filter] : '';
   return (
     <div className={style.inputRow}>
       <label htmlFor={id}>{label}</label>
       <select
-        className="form-control"
+        className={cn('form-control', style.selector, value !== '' && style.selectorChosen)}
         id={id}
-        value={filter in filters ? filters[filter] : ''}
+        value={value}
         onChange={onChange}
       >
         {options}
