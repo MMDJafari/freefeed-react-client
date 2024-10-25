@@ -1,17 +1,25 @@
 /* global CONFIG */
 import { IndexLink, Link, withRouter } from 'react-router';
-import { faBars, faSearch, faSignInAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faSearch,
+  faSignInAlt,
+  faSlidersH,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { KEY_ESCAPE } from 'keycode-js';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useEvent } from 'react-use-event-hook';
 import { openSidebar } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 import { useMediaQuery } from './hooks/media-query';
 import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
 import { Autocomplete } from './autocomplete/autocomplete';
+import { ButtonLink } from './button-link';
 
 const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
 
@@ -57,6 +65,11 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     [router, query],
   );
 
+  const showAdvancedSearch = useEvent(() => {
+    router.push(`/search?q=${encodeURIComponent(query.trim())}&advanced`);
+    input.current.blur();
+  });
+
   const onKeyDown = useCallback((e) => e.keyCode === KEY_ESCAPE && input.current.blur(), []);
 
   const clearSearchForm = useCallback(() => (setQuery(''), input.current.focus()), []);
@@ -91,6 +104,10 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             tabIndex={-1}
           />
           <div className={styles.autocompleteBox}>
+            <ButtonLink tag="div" className={styles.advancedSearch} onClick={showAdvancedSearch}>
+              <Icon icon={faSlidersH} className={styles.advancedSearchIcon} />
+              <span>Advanced search options</span>
+            </ButtonLink>
             <Autocomplete inputRef={input} context="search" anchor={autocompleteAnchor} />
           </div>
         </span>

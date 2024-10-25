@@ -24,15 +24,21 @@ const AdvancedSearchForm = lazyComponent(
 );
 
 function FeedHandler(props) {
+  const urlQuery = useSelector((state) => state.routing.locationBeforeTransitions.query);
   const queryString = useSearchQuery();
+  const preopenAdvancedForm = !queryString || 'advanced' in urlQuery;
+
   const pageIsLoading = useSelector((state) => state.routeLoadingState);
-  const [advFormVisible, setAdvFormVisible] = useBool(!queryString);
+  const [advFormVisible, setAdvFormVisible] = useBool(preopenAdvancedForm);
   const authenticated = useSelector((state) => state.authenticated);
 
-  useEffect(
-    () => void (pageIsLoading && setAdvFormVisible(false)),
-    [pageIsLoading, setAdvFormVisible],
-  );
+  useEffect(() => {
+    if (pageIsLoading) {
+      setAdvFormVisible(false);
+    } else {
+      setAdvFormVisible(preopenAdvancedForm);
+    }
+  }, [pageIsLoading, preopenAdvancedForm, setAdvFormVisible]);
 
   if (!authenticated) {
     return (
