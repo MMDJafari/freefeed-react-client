@@ -114,6 +114,7 @@ export function AdvancedSearchForm() {
         </Section>
         <Section title="With conditions">
           <Columns>
+            <TextInput label="Group/user feeds" placeholder="group1, user2" filter="in:" />
             <TextInput label="Content written by users" placeholder="user1, user2" filter="by:" />
             <TextInput label="Posts written by users" placeholder="user1, user2" filter="from:" />
             <TextInput
@@ -123,7 +124,6 @@ export function AdvancedSearchForm() {
             />
             <TextInput label="Posts created after" type="date" filter="post-date:>=" />
             <TextInput label="Posts created before" type="date" filter="post-date:<" />
-            <TextInput label="Specific feeds" placeholder="group1, user2" filter="in:" />
             {showFullForm ? (
               <>
                 <ChooseInput label="Posts with privacy" filter="is:">
@@ -163,7 +163,11 @@ export function AdvancedSearchForm() {
                 placeholder="user1, user2"
                 filter="-from:"
               />
-              <TextInput label="Exclude specific feeds" placeholder="group1, user2" filter="-in:" />
+              <TextInput
+                label="Exclude group/user feeds"
+                placeholder="group1, user2"
+                filter="-in:"
+              />
               <TextInput
                 label="Exclude posts commented by users"
                 placeholder="user1, user2"
