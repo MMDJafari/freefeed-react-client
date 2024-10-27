@@ -86,6 +86,28 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     onBlur: closeSearchForm,
   });
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (document.activeElement !== document.body) {
+          return;
+        }
+        if (
+          // [/] or Ctrl+[K]
+          (e.code === 'Slash' && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) ||
+          (e.code === 'KeyK' && e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey)
+        ) {
+          input.current.focus();
+          e.preventDefault();
+        }
+      },
+      { signal: abortController.signal },
+    );
+    return () => abortController.abort();
+  }, []);
+
   const searchForm = (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
       <span className={styles.searchInputContainer} {...focusHandlers} tabIndex={0}>
