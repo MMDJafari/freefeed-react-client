@@ -95,7 +95,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             type="text"
             name="q"
             ref={input}
-            placeholder="Search request"
+            placeholder=""
             autoFocus={collapsibleSearchForm}
             autoComplete="off"
             value={query}
@@ -103,6 +103,20 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             onKeyDown={onKeyDown}
             tabIndex={-1}
           />
+          <button
+            type="button"
+            className={cn(styles.clearSearchButton, styles.compactButton)}
+            aria-label="Clear search form"
+            title="Clear search form"
+            onClick={clearSearchForm}
+            tabIndex={-1}
+          >
+            <Icon icon={faTimesCircle} />
+          </button>
+          <div className={styles.placeholderBox}>
+            <span>Search request</span>
+            <kbd>/</kbd>
+          </div>
           <div className={styles.autocompleteBox}>
             <ButtonLink tag="div" className={styles.advancedSearch} onClick={showAdvancedSearch}>
               <Icon icon={faSlidersH} className={styles.advancedSearchIcon} />
@@ -112,16 +126,6 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
           </div>
         </span>
         {compactSearchForm && <Icon icon={faSearch} className={styles.searchIcon} />}
-        <button
-          type="button"
-          className={cn(styles.clearSearchButton, styles.compactButton)}
-          aria-label="Clear search form"
-          title="Clear search form"
-          onClick={clearSearchForm}
-          tabIndex={-1}
-        >
-          <Icon icon={faTimesCircle} />
-        </button>
       </span>
       {fullSearchForm && (
         <button type="submit" className={styles.searchButton}>
