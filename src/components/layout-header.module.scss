@@ -132,7 +132,7 @@ $without-sidebar: '(max-width: 991px)';
     text-overflow: ellipsis;
   }
 
-  &:hover {
+  &:is(:hover, :focus) {
     background-color: #eee;
   }
 
@@ -146,7 +146,7 @@ $without-sidebar: '(max-width: 991px)';
     border-color: $separator-color;
   }
 
-  :global(.dark-theme) &:hover {
+  :global(.dark-theme) &:is(:hover, :focus) {
     background-color: $bg-color-lightest;
   }
 }
