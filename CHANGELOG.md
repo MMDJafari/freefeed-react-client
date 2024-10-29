@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.136.0] - Not released
+### Fixed
+- User's avatars in the posts are now shown without a loading="lazy" attribute.
+- If the avatar picture is not found, the default avatar is shown.
 
 ## [1.135.3] - 2024-10-22
 ### Fixed
