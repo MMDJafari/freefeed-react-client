@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { browserHistory } from 'react-router';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
@@ -81,13 +82,23 @@ export function AdvancedSearchForm() {
     <filtersContext.Provider value={ctxValue}>
       <div className={style.form}>
         <Section title="What to search">
-          <input
-            type="search"
-            name="q"
-            {...queryAttrs}
-            className="form-control"
-            placeholder="Text to search"
-          />
+          <div className={style.searchInputBox}>
+            <input
+              type="search"
+              name="q"
+              {...queryAttrs}
+              className="form-control"
+              placeholder="Text to search"
+            />
+            <button
+              type="button"
+              disabled={resultingQuery === ''}
+              className={cn('btn btn-primary')}
+              onClick={onSearch}
+            >
+              Search
+            </button>
+          </div>
           <div className={style.searchScopes}>
             Search for:
             <label>
@@ -199,7 +210,7 @@ export function AdvancedSearchForm() {
           <button
             type="button"
             disabled={resultingQuery === ''}
-            className="btn btn-primary col-sm-4 col-xs-12"
+            className={cn('btn btn-primary', style.bigSearchButton)}
             onClick={onSearch}
           >
             Search

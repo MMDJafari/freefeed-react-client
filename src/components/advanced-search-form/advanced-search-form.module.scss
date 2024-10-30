@@ -46,6 +46,20 @@
   margin-bottom: 0.5em;
 }
 
+.searchInputBox {
+  display: flex;
+  gap: 0.3em;
+
+  button {
+    padding-inline: 2em;
+    display: none;
+
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+}
+
 .searchScopes {
   margin-top: 0.5em;
   display: flex;
@@ -147,4 +161,13 @@
 
 .textInputChosen {
   color: var(--text-color) !important;
+}
+
+.bigSearchButton {
+  width: 100%;
+
+  @media (min-width: 768px) {
+    // Width of one column of the form
+    width: calc(50% - 1em);
+  }
 }
