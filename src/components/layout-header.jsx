@@ -1,27 +1,16 @@
 /* global CONFIG */
 import { IndexLink, Link, withRouter } from 'react-router';
-import {
-  faBars,
-  faSearch,
-  faSignInAlt,
-  faSlidersH,
-  faTimesCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { faBars, faSearch, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { useCallback, useState } from 'react';
 import cn from 'classnames';
-import { KEY_ESCAPE } from 'keycode-js';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useEvent } from 'react-use-event-hook';
 import { openSidebar } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 import { useMediaQuery } from './hooks/media-query';
 import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
-import { Autocomplete } from './autocomplete/autocomplete';
-import { ButtonLink } from './button-link';
-
-const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
+import { HeaderSearchForm } from './layout-header-search';
 
 export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const dispatch = useDispatch();
@@ -33,125 +22,15 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const authenticated = useSelector((state) => state.authenticated);
 
   const [searchExpanded, setSearchExpanded] = useState(false);
-  const [query, setQuery] = useState('');
-  const onQueryChange = useCallback(({ target }) => setQuery(target.value), []);
 
   const fullSearchForm = isWideScreen;
   const compactSearchForm = !fullSearchForm;
   const collapsibleSearchForm = isNarrowScreen && (!onSearchPage || searchExpanded);
 
-  useEffect(() => {
-    if (!collapsibleSearchForm) {
-      setSearchExpanded(false);
-    }
-  }, [collapsibleSearchForm]);
-
   const openSearchForm = useCallback(() => setSearchExpanded(true), []);
   const closeSearchForm = useCallback(() => setSearchExpanded(false), []);
 
-  const initialQuery = useInitialQuery(router);
-  const input = useRef(null);
-  useEffect(() => void setQuery(initialQuery), [initialQuery]);
-
-  const onSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      const q = query.trim();
-      if (q !== '') {
-        router.push(`/search?q=${encodeURIComponent(q)}`);
-        input.current.blur();
-      }
-    },
-    [router, query],
-  );
-
-  const showAdvancedSearch = useEvent(() => {
-    router.push(`/search?q=${encodeURIComponent(query.trim())}&advanced`);
-    input.current.blur();
-  });
-
-  const onKeyDown = useCallback((e) => e.keyCode === KEY_ESCAPE && input.current.blur(), []);
-
-  const clearSearchForm = useCallback(() => (setQuery(''), input.current.focus()), []);
-
-  const onFocus = useCallback(
-    () => isNarrowScreen && onSearchPage && setSearchExpanded(true),
-    [isNarrowScreen, onSearchPage],
-  );
-
   const doOpenSidebar = useCallback(() => dispatch(openSidebar(true)), [dispatch]);
-
-  const focusHandlers = useDebouncedFocus({
-    onFocus,
-    onBlur: closeSearchForm,
-  });
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    document.addEventListener(
-      'keydown',
-      (e) => {
-        if (document.activeElement !== document.body) {
-          return;
-        }
-        if (
-          // [/] or Ctrl+[K]
-          (e.code === 'Slash' && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) ||
-          (e.code === 'KeyK' && e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey)
-        ) {
-          input.current.focus();
-          e.preventDefault();
-        }
-      },
-      { signal: abortController.signal },
-    );
-    return () => abortController.abort();
-  }, []);
-
-  const searchForm = (
-    <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
-      <span className={styles.searchInputContainer} {...focusHandlers} tabIndex={0}>
-        <span className={styles.searchInputBox}>
-          <input
-            className={styles.searchInput}
-            type="text"
-            name="q"
-            ref={input}
-            placeholder="Press / to search"
-            autoFocus={collapsibleSearchForm}
-            autoComplete="off"
-            value={query}
-            onChange={onQueryChange}
-            onKeyDown={onKeyDown}
-            tabIndex={-1}
-          />
-          <button
-            type="button"
-            className={cn(styles.clearSearchButton, styles.compactButton)}
-            aria-label="Clear search form"
-            title="Clear search form"
-            onClick={clearSearchForm}
-            tabIndex={-1}
-          >
-            <Icon icon={faTimesCircle} />
-          </button>
-          <div className={styles.autocompleteBox}>
-            <ButtonLink tag="div" className={styles.advancedSearch} onClick={showAdvancedSearch}>
-              <Icon icon={faSlidersH} className={styles.advancedSearchIcon} />
-              <span>Advanced search options</span>
-            </ButtonLink>
-            <Autocomplete inputRef={input} context="search" anchor={autocompleteAnchor} />
-          </div>
-        </span>
-        {compactSearchForm && <Icon icon={faSearch} className={styles.searchIcon} />}
-      </span>
-      {fullSearchForm && (
-        <button type="submit" className={styles.searchButton}>
-          Search
-        </button>
-      )}
-    </form>
-  );
 
   const sidebarButton =
     !isLayoutWithSidebar &&
@@ -186,7 +65,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     >
       {searchExpanded ? (
         <div className={styles.searchExpandedCont}>
-          {authenticated && searchForm}
+          {authenticated ? <HeaderSearchForm closeSearchForm={closeSearchForm} /> : null}
           {sidebarButton}
         </div>
       ) : (
@@ -202,7 +81,9 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             )}
           </h1>
           <div className={styles.activeElements}>
-            {authenticated && !collapsibleSearchForm && searchForm}
+            {authenticated && !collapsibleSearchForm ? (
+              <HeaderSearchForm closeSearchForm={closeSearchForm} />
+            ) : null}
             <span className={styles.buttons}>
               {authenticated && collapsibleSearchForm && (
                 <button
@@ -226,49 +107,3 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     </header>
   );
 });
-
-function useInitialQuery(router) {
-  return useMemo(() => {
-    const route = router.routes[router.routes.length - 1];
-    switch (route.name) {
-      case 'search':
-        return (router.location.query.q || router.location.query.qs || '').trim();
-      case 'saves':
-        return `in-my:saves `;
-      case 'discussions':
-        return `in-my:discussions `;
-      case 'direct':
-        return `in-my:directs `;
-      case 'userLikes':
-        return `liked-by:${router.params.userName} `;
-      case 'userComments':
-        return `commented-by:${router.params.userName} `;
-      case 'userFeed':
-        return `in:${router.params.userName} `;
-      default:
-        return '';
-    }
-  }, [router.routes, router.params, router.location]);
-}
-
-function useDebouncedFocus({ onFocus: onFocusOrig, onBlur: onBlurOrig }, interval = 100) {
-  const focusTimer = useRef(0);
-  const blurTimer = useRef(0);
-
-  const cleanup = useCallback(() => {
-    window.clearTimeout(blurTimer.current);
-    window.clearTimeout(focusTimer.current);
-  }, []);
-  useEffect(() => () => cleanup(), [cleanup]);
-
-  const onFocus = useCallback(() => {
-    cleanup();
-    focusTimer.current = window.setTimeout(onFocusOrig, interval);
-  }, [cleanup, onFocusOrig, interval]);
-  const onBlur = useCallback(() => {
-    cleanup();
-    blurTimer.current = window.setTimeout(onBlurOrig, interval);
-  }, [cleanup, onBlurOrig, interval]);
-
-  return { onFocus, onBlur };
-}
