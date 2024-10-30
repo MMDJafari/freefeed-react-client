@@ -117,7 +117,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             type="text"
             name="q"
             ref={input}
-            placeholder=""
+            placeholder="Press / to search"
             autoFocus={collapsibleSearchForm}
             autoComplete="off"
             value={query}
@@ -135,10 +135,6 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
           >
             <Icon icon={faTimesCircle} />
           </button>
-          <div className={styles.placeholderBox}>
-            <span>Search request</span>
-            <kbd>/</kbd>
-          </div>
           <div className={styles.autocompleteBox}>
             <ButtonLink tag="div" className={styles.advancedSearch} onClick={showAdvancedSearch}>
               <Icon icon={faSlidersH} className={styles.advancedSearchIcon} />
