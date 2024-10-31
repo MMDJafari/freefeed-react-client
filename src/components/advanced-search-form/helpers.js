@@ -50,6 +50,8 @@ export const usernameFilters = new Set([
   'by:',
   'from:',
   'commented-by:',
+  'liked-by:',
+  'cliked-by:',
   'in:',
   '-in:',
   '-from:',
