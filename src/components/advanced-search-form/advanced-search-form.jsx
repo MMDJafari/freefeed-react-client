@@ -218,7 +218,10 @@ export function AdvancedSearchForm() {
         </Section>
         {resultingQuery ? (
           <p>
-            Search query: <code>{resultingQuery}</code>
+            Search query:{' '}
+            <ButtonLink tag="code" onClick={onSearch}>
+              {resultingQuery}
+            </ButtonLink>
           </p>
         ) : null}
         {showFullDocs ? (
