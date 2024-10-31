@@ -15,21 +15,13 @@ const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|l
 export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, closeSearchForm }) {
   const isWideScreen = useMediaQuery('(min-width: 700px)');
   const isNarrowScreen = useMediaQuery('(max-width: 549px)');
-  const onSearchPage = router.routes[router.routes.length - 1].name === 'search';
 
-  const [searchExpanded, setSearchExpanded] = useState(false);
   const [query, setQuery] = useState('');
   const onQueryChange = useEvent(({ target }) => setQuery(target.value));
 
   const fullSearchForm = isWideScreen;
   const compactSearchForm = !fullSearchForm;
-  const collapsibleSearchForm = isNarrowScreen && (!onSearchPage || searchExpanded);
-
-  useEffect(() => {
-    if (!collapsibleSearchForm) {
-      setSearchExpanded(false);
-    }
-  }, [collapsibleSearchForm]);
+  const collapsibleSearchForm = isNarrowScreen;
 
   const initialQuery = useInitialQuery(router);
   const input = useRef(null);
@@ -49,7 +41,7 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
     input.current.blur();
   });
 
-  const onFocus = useEvent(() => isNarrowScreen && onSearchPage && setSearchExpanded(true));
+  const onFocus = useEvent(() => {}); // TODO remove
   const onKeyDown = useEvent((e) => e.keyCode === KEY_ESCAPE && input.current.blur());
   const clearSearchForm = useEvent(() => (setQuery(''), input.current.focus()));
 

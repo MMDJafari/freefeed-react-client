@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { IndexLink, Link, withRouter } from 'react-router';
+import { IndexLink, Link } from 'react-router';
 import { faBars, faSearch, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useState } from 'react';
 import cn from 'classnames';
@@ -12,9 +12,8 @@ import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
 import { HeaderSearchForm } from './layout-header-search';
 
-export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
+export function LayoutHeader() {
   const dispatch = useDispatch();
-  const onSearchPage = router.routes[router.routes.length - 1].name === 'search';
   const isLayoutWithSidebar = useMediaQuery('(min-width: 992px)');
   const isWideScreen = useMediaQuery('(min-width: 700px)');
   const isNarrowScreen = useMediaQuery('(max-width: 549px)');
@@ -25,7 +24,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
 
   const fullSearchForm = isWideScreen;
   const compactSearchForm = !fullSearchForm;
-  const collapsibleSearchForm = isNarrowScreen && (!onSearchPage || searchExpanded);
+  const collapsibleSearchForm = isNarrowScreen;
 
   const openSearchForm = useCallback(() => setSearchExpanded(true), []);
   const closeSearchForm = useCallback(() => setSearchExpanded(false), []);
@@ -106,4 +105,4 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
       )}
     </header>
   );
-});
+}
