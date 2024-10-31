@@ -78,9 +78,19 @@ export function AdvancedSearchForm() {
     browserHistory.push(`/search?q=${encodeURIComponent(resultingQuery)}`),
   );
 
+  const onKeyDown = useEvent((e) => {
+    if (
+      e.code === 'Enter' &&
+      e.target.matches('input[type="text"], input[type="date"], input[type="search"]')
+    ) {
+      e.preventDefault();
+      onSearch();
+    }
+  });
+
   return (
     <filtersContext.Provider value={ctxValue}>
-      <div className={style.form}>
+      <div className={style.form} onKeyDown={onKeyDown}>
         <Section title="What to search">
           <div className={style.searchInputBox}>
             <input
