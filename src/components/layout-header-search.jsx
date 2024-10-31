@@ -41,13 +41,14 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
     input.current.blur();
   });
 
-  const onFocus = useEvent(() => {}); // TODO remove
   const onKeyDown = useEvent((e) => e.keyCode === KEY_ESCAPE && input.current.blur());
   const clearSearchForm = useEvent(() => (setQuery(''), input.current.focus()));
 
-  const focusHandlers = useDebouncedFocus({
-    onFocus,
-    onBlur: closeSearchForm,
+  const onBlur = useEvent((e) => {
+    // When the new focus is outside the search form
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      closeSearchForm();
+    }
   });
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
 
   return (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
-      <span className={styles.searchInputContainer} {...focusHandlers} tabIndex={0}>
+      <span className={styles.searchInputContainer} onBlur={onBlur} tabIndex={0}>
         <span className={styles.searchInputBox}>
           <input
             className={styles.searchInput}
@@ -140,26 +141,4 @@ function useInitialQuery(router) {
         return '';
     }
   }, [router.routes, router.params, router.location]);
-}
-
-function useDebouncedFocus({ onFocus: onFocusOrig, onBlur: onBlurOrig }, interval = 100) {
-  const focusTimer = useRef(0);
-  const blurTimer = useRef(0);
-
-  const cleanup = useEvent(() => {
-    window.clearTimeout(blurTimer.current);
-    window.clearTimeout(focusTimer.current);
-  });
-  useEffect(() => () => cleanup(), [cleanup]);
-
-  const onFocus = useEvent(() => {
-    cleanup();
-    focusTimer.current = window.setTimeout(onFocusOrig, interval);
-  });
-  const onBlur = useEvent(() => {
-    cleanup();
-    blurTimer.current = window.setTimeout(onBlurOrig, interval);
-  });
-
-  return { onFocus, onBlur };
 }
