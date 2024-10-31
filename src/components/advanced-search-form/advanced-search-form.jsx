@@ -194,6 +194,11 @@ export function AdvancedSearchForm() {
                 placeholder="user1, user2"
                 filter="-commented-by:"
               />
+              <TextInput
+                label="Exclude posts liked by users"
+                placeholder="user1, user2"
+                filter="-liked-by:"
+              />
               <ChooseInput label="Exclude posts with attachments" filter="-has:">
                 <option value="">Don&#x2019;t exclude</option>
                 <option value="images">Images</option>

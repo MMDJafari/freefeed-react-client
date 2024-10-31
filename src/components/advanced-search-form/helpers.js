@@ -56,6 +56,7 @@ export const usernameFilters = new Set([
   '-in:',
   '-from:',
   '-commented-by:',
+  '-liked-by:',
 ]);
 
 export function usernames(text = '') {
