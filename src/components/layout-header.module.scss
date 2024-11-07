@@ -110,6 +110,7 @@ $without-sidebar: '(max-width: 991px)';
 
 .advancedSearch {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
@@ -126,14 +127,20 @@ $without-sidebar: '(max-width: 991px)';
   translate: 0 0;
   transition: all 0.1s;
 
-  &:last-child {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  &:is(*, :hover, :focus) {
+    // Reset the 'a' style
+    color: inherit;
+    text-decoration: none;
   }
 
   &:is(:hover, :focus) {
     background-color: #eee;
+  }
+
+  &:last-child {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   @starting-style {

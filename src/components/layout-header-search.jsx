@@ -1,13 +1,13 @@
 import cn from 'classnames';
+import { Link, withRouter } from 'react-router';
 import { faSearch, faSlidersH, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useEvent } from 'react-use-event-hook';
-import { withRouter } from 'react-router';
+
 import { KEY_ESCAPE } from 'keycode-js';
 import styles from './layout-header.module.scss';
 import { Icon } from './fontawesome-icons';
 import { Autocomplete } from './autocomplete/autocomplete';
-import { ButtonLink } from './button-link';
 import { useMediaQuery } from './hooks/media-query';
 
 const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
@@ -36,10 +36,7 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
     }
   });
 
-  const showAdvancedSearch = useEvent(() => {
-    router.push(`/search?q=${encodeURIComponent(query.trim())}&advanced`);
-    input.current.blur();
-  });
+  const advancedSearchClick = useEvent(() => document.activeElement?.blur());
 
   const onKeyDown = useEvent((e) => e.keyCode === KEY_ESCAPE && input.current.blur());
   const clearSearchForm = useEvent(() => (setQuery(''), input.current.focus()));
@@ -101,10 +98,14 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
             <Icon icon={faTimesCircle} />
           </button>
           <div className={styles.autocompleteBox}>
-            <ButtonLink tag="div" className={styles.advancedSearch} onClick={showAdvancedSearch}>
+            <Link
+              className={styles.advancedSearch}
+              to={`/search?q=${encodeURIComponent(query.trim())}&advanced`}
+              onClick={advancedSearchClick}
+            >
               <Icon icon={faSlidersH} className={styles.advancedSearchIcon} />
               <span>Advanced search options</span>
-            </ButtonLink>
+            </Link>
             <Autocomplete inputRef={input} context="search" anchor={autocompleteAnchor} />
           </div>
         </span>
