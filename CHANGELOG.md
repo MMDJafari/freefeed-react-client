@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.136.0] - Not released
+### Changed
+- The advanced search form is refactored to support the new search operators.
+### Added
+- When user presses '/' or 'Ctrl+K' hotkeys, the search input form in the
+  header is focused.
+- This form now has an "Advanced search options" button that redirects to the
+  advanced search form.
 ### Fixed
 - The post attachments now appear in the same order as they were added by user.
   Previously, attachments were sorted by the upload order.
