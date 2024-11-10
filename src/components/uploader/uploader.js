@@ -79,7 +79,7 @@ export function useUploader({
 
   const doUploadFile = useCallback(
     (file) => {
-      if (fileIds.length >= maxCount) {
+      if (fileIds.length + unfinishedFiles.size >= maxCount) {
         // No more files accepting
         return;
       }
