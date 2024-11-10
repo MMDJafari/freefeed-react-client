@@ -123,7 +123,8 @@ export function useUploader({
       ...initialFileIds,
       ...[...uploadIds]
         .filter((id) => statuses[id]?.success)
-        .map((id) => allUploads[id].attachment.id),
+        .map((id) => allUploads[id]?.attachment.id)
+        .filter(Boolean),
     ];
 
     // Detect successful uploads
