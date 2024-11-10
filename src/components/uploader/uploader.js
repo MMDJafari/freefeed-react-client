@@ -166,8 +166,8 @@ export function useUploader({
   const clearUploads = useCallback(() => {
     uploadIds.clear();
     unfinishedFiles.clear();
-    setFileIdsLocally(initialFileIds);
-  }, [initialFileIds, setFileIdsLocally, unfinishedFiles, uploadIds]);
+    setFileIdsLocally(givenFileIds);
+  }, [givenFileIds, setFileIdsLocally, unfinishedFiles, uploadIds]);
 
   return {
     isUploading,
