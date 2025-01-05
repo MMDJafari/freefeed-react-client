@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.137.0] - Not released
+
 ## [1.136.3] - 2025-01-05
 ### Changed
 - We now use the our own CORS proxy when showing the link previews for Coub,
